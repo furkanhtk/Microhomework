@@ -34,3 +34,10 @@ int main()
 			printf("Please enter a defined number\n");	
 	}
 }
+	
+	
+	
+	
+
+
+
