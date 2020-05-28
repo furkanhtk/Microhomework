@@ -1,0 +1,95 @@
+sum(int, int):
+	PUSHM.W #1, R4
+	MOV.W   R1, R4
+	SUB.W   #4, R1
+	MOV.W   R12, -2(R4)
+	MOV.W   R13, -4(R4)
+	MOV.W   -2(R4), R12
+	ADD.W   -4(R4), R12
+	ADD.W   #4, R1
+	POPM.W  #1, r4
+	RET
+subtract(int, int):
+	PUSHM.W #1, R4
+	MOV.W   R1, R4
+	SUB.W   #4, R1
+	MOV.W   R12, -2(R4)
+	MOV.W   R13, -4(R4)
+	MOV.W   -2(R4), R12
+	SUB.W   -4(R4), R12
+	ADD.W   #4, R1
+	POPM.W  #1, r4
+	RET
+multiple(int, int):
+	PUSHM.W #1, R4
+	MOV.W   R1, R4
+	SUB.W   #4, R1
+	MOV.W   R12, -2(R4)
+	MOV.W   R13, -4(R4)
+	MOV.W   -4(R4), R13
+	MOV.W   -2(R4), R12
+	CALL    #__mspabi_mpyi
+	ADD.W   #4, R1
+	POPM.W  #1, r4
+	RET
+func_and(int, int):
+	PUSHM.W #1, R4
+	MOV.W   R1, R4
+	SUB.W   #4, R1
+	MOV.W   R12, -2(R4)
+	MOV.W   R13, -4(R4)
+	CMP.W   #0, -2(R4) { JEQ      .L2
+	CMP.W   #0, -4(R4) { JEQ      .L2
+	MOV.B   #1, R12
+	BR  # .L3
+.L2:
+	MOV.B   #0, R12
+.L3:
+	ADD.W   #4, R1
+	POPM.W  #1, r4
+	RET
+func_or(int, int):
+	PUSHM.W #1, R4
+	MOV.W   R1, R4
+	SUB.W   #4, R1
+	MOV.W   R12, -2(R4)
+	MOV.W   R13, -4(R4)
+	CMP.W   #0, -2(R4) { JNE      .L6
+	CMP.W   #0, -4(R4) { JEQ      .L7
+.L6:
+	MOV.B   #1, R12
+	BR  # .L8
+.L7:
+	MOV.B   #0, R12
+.L8:
+	ADD.W   #4, R1
+	POPM.W  #1, r4
+	RET
+main:
+	PUSHM.W #1, R4
+	MOV.W   R1, R4
+	SUB.W   #4, R1
+	MOV.B   #2, R13
+	MOV.B   #1, R12
+	CALL    #sum(int, int)
+	MOV.W   R12, -2(R4)
+	MOV.B   #4, R13
+	MOV.B   #3, R12
+	CALL    #subtract(int, int)
+	MOV.W   R12, -4(R4)
+	MOV.B   #6, R13
+	MOV.B   #5, R12
+	CALL    #multiple(int, int)
+	MOV.W   R12, -6(R4)
+	MOV.B   #20, R13
+	MOV.B   #10, R12
+	CALL    #func_and(int, int)
+	MOV.W   R12, -8(R4)
+	MOV.B   #20, R13
+	MOV.B   #10, R12
+	CALL    #func_or(int, int)
+	MOV.W   R12, -10(R4)
+	MOV.B   #0, R12
+	ADD.W   #10  R1
+	POPM.W  #1, r4
+	RET

@@ -1,11 +1,17 @@
-#include <stdio.h>
+int func_and(int num4, int num5) 
+{
+   return num4 && num5 ; 
+}
 
-int main() {
-  int i;
+int func_or(int num4, int num5) 
+{
+   return num4 || num5 ; 
+}
 
-  for (i = 1; i < 11; ++i)
-  {
-    printf("%d ", i);
-  }
-  return 0;
+int main () {
+    int output;
+    int output2;
+	output = func_and(10, 20);
+    output = func_or(10, 20);
+
 }
